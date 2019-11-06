@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import {connect} from "react-redux";
 import Card from '../../components/Card';
-import UnitedStates from '../../assets/images/united-states.svg';
-import UnitedKingdom from '../../assets/images/united-kingdom.svg';
-import EuropeanUnion from '../../assets/images/european-union.svg';
+import { Icons } from '../../utils';
 import Exchange from '../../assets/images/exchange.svg';
 import './styles.css';
 
-function Home({ dollars, euros, pounds }){
+function Home({ pockets }){
 
     return (
         <div className='home__container'>
@@ -22,15 +20,13 @@ function Home({ dollars, euros, pounds }){
                         <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                     </ol>
                     <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <Card currency='Dollar' flag={UnitedStates} balance={dollars} symbol={'$'}/>
-                        </div>
-                        <div className="carousel-item">
-                            <Card currency='Euro' flag={EuropeanUnion} balance={euros} symbol={'€'}/>
-                        </div>
-                        <div className="carousel-item">
-                            <Card currency='Pound' flag={UnitedKingdom} balance={pounds} symbol={'£'}/>
-                        </div>
+                        {
+                            pockets.map((pocket, index) => (
+                                <div className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                                    <Card currency={pocket.currency} flag={Icons[pocket.flag]} balance={pocket.balance} symbol={pocket.symbol}/>
+                                </div>
+                            ))
+                        }
                     </div>
                     <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -56,16 +52,12 @@ function Home({ dollars, euros, pounds }){
 }
 
 Home.propTypes = {
-    dollars: PropTypes.string.isRequired,
-    euros: PropTypes.string.isRequired,
-    pounds: PropTypes.string.isRequired
+    pockets: PropTypes.array.isRequired,
 }
 
 const mapStateToProps = ({ wallets }) => {
     return {
-        dollars: wallets.dollars.balance,
-        euros: wallets.euros.balance,
-        pounds: wallets.pounds.balance
+        pockets: wallets.pockets
     }
 }
 

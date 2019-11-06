@@ -1,27 +1,9 @@
-import { useEffect, useRef } from 'react';
 
-export function useInterval(callback, delay) {
-    const savedCallback = useRef();
-  
-    // Remember the latest function.
-    useEffect(() => {
-      savedCallback.current = callback;
-    }, [callback]);
-  
-    // Set up the interval.
-    useEffect(() => {
-      function tick() {
-        savedCallback.current();
-      }
-      if (delay !== null) {
-        let id = setInterval(tick, delay);
-        return () => clearInterval(id);
-      }
-    }, [delay]);
-  }
+import UnitedStates from '../assets/images/united-states.svg';
+import UnitedKingdom from '../assets/images/united-kingdom.svg';
+import Europe from '../assets/images/european-union.svg';
 
-
-  export function formatMoney(number) {//string
+export function formatMoney(number) {//string
 
     if(isNaN(number)) {return number};
     
@@ -62,8 +44,15 @@ export function useInterval(callback, delay) {
     }
   }
 
-  export const regexBase = {
+export const regexBase = {
     amountRegex: /^[0-9]+(\.[0-9]{1,2})?$/,
     emailRegex: /^.{1,}@.{1,}$/,
     wholeValueRegex:  /^[0-9]+$/,
+}
+
+export const Icons = {
+  'UnitedStates': UnitedStates,
+  'UnitedKingdom': UnitedKingdom,
+  'Europe': Europe
+  
 }

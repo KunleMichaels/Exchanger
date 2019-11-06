@@ -4,11 +4,11 @@ import systemConfig from '../config/system';
 class productsService {
 
 
-    getAllRates = () => {
+    getAllRates = (base="USD") => {
         return new Promise((resolve, reject) => {
-            axios.get(systemConfig.serverBaseUrl + '/latest.json', {
+            axios.get(systemConfig.serverBaseUrl + '/latest', {
                 params: {
-                  app_id: systemConfig.appID,
+                  base,
                   symbols: 'USD,GBP,EUR'  
                 }
             }).then(response => {

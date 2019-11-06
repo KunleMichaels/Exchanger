@@ -54,6 +54,7 @@ function AmountInput({getRates, onChange, rates, ...parentProps}) {
         let charArray = newValue.split('');
 
         let periodCount = 0;
+        // eslint-disable-next-line
         charArray.map(char => {
             if(char === '.') {
                 periodCount++;
