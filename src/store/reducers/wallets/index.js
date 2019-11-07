@@ -5,7 +5,7 @@ const initialState = {
         {
             currency: 'dollars',
             symbol: '$',
-            balance: '100.00',
+            balance: '100000000.00',
             flag: 'UnitedStates'
         },
         {

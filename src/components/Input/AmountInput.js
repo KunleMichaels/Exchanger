@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from "react-redux";
 import * as ratesActions from '../../store/actions/rates';
 
-function AmountInput({getRates, onChange, rates, ...parentProps}) {
+function AmountInput({getRates, onChange, rates, pockets, currentIndex, ...parentProps}) {
 
     useEffect(() => {
         getRates();
@@ -75,7 +75,18 @@ function AmountInput({getRates, onChange, rates, ...parentProps}) {
  
 
     return (
-        <input {...parentProps} onKeyDown={onKeyDownHandler} onChange={onChangeHandler} />
+        <div className="input-group">
+            <input  {...parentProps} onKeyDown={onKeyDownHandler} onChange={onChangeHandler} className="form-control" /> 
+            <div className="input-group-append">
+                <select class="custom-select" id="currencies">
+                    {
+                        pockets.map((pocket, index) => {
+                            return <option value={pocket.currency} selected={index === currentIndex}>{pocket.currency}</option>
+                        })
+                    }
+                </select>
+            </div>
+        </div>
     )
 
 
@@ -86,10 +97,11 @@ AmountInput.propTypes = {
     getRates: PropTypes.func.isRequired
 }
 
-const mapStateToProps = ({ rates }) => {
+const mapStateToProps = ({ rates, wallets }) => {
     console.log("Currently Rates ===: ", rates)
     return {
-        rates: rates.rates
+        rates: rates.rates,
+        pockets: wallets.pockets
     }
 }
 

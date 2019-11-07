@@ -27,6 +27,7 @@ function Exchange(){
                     name='base'
                     onChange={amount_on_change}
                     placeholder="0"
+                    currentIndex={0}
                 />
 
                 <AmountInput
@@ -34,6 +35,7 @@ function Exchange(){
                     name='convert'
                     onChange={amount_on_change}
                     placeholder="0"
+                    currentIndex={2}
                 />
             </div>
         </div>

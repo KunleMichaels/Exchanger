@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatMoney } from '../../utils';
 import './styles.css';
 
 function Card({ currency, balance, flag,symbol}){
@@ -8,7 +9,7 @@ function Card({ currency, balance, flag,symbol}){
             <section className='card__box'>
                 <section className='card__title'>{currency}</section>
                 <span className='card__symbol'><img src={flag} alt={`${currency} Flag`}/></span>
-                <section className='clearfix card__balance'>{ `${symbol}${balance}`}</section>
+                <section className='clearfix card__balance'>{ `${symbol}${formatMoney(balance)}`}</section>
             </section>
         </section>
     );

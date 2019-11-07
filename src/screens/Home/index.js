@@ -13,16 +13,16 @@ function Home({ pockets }){
         <div className='home__container'>
             <div className='jumbotron'>
                 <h5 className='main__header'>Wallets</h5>
-                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div id="carouselExampleControls" className="carousel slide" data-ride="carousel" data-interval="false">
                     <ol className="carousel-indicators">
-                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
                         <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                         <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                     </ol>
                     <div className="carousel-inner">
                         {
                             pockets.map((pocket, index) => (
-                                <div className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                                <div key={pocket.currency} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
                                     <Card currency={pocket.currency} flag={Icons[pocket.flag]} balance={pocket.balance} symbol={pocket.symbol}/>
                                 </div>
                             ))
