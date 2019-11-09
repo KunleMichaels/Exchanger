@@ -8,7 +8,7 @@ import * as ratesActions from '../../store/actions/rates';
 
 import './styles.css';
 
-function AmountInput({getRates, onChange, rates, pockets, id, label, currentIndex, ...parentProps}) {
+function AmountInput({getRates, onChange, rates, pockets, id, label, base, currentIndex, ...parentProps}) {
 
     useEffect(() => {
         getRates();
@@ -80,20 +80,21 @@ function AmountInput({getRates, onChange, rates, pockets, id, label, currentInde
     const options = pockets.map(pocket => {
         return {
             label: <span><img src={Icons[pocket.flag] } className='currency-flag' alt={pocket.currency}/> {pocket.shortcode}</span>,
-            value: pocket.currency
+            value: pocket.currency,
+            shortcode: pocket.shortcode
         }
     })
 
-    return (
+     return (
         <div className='form-group form-group-lg mb-0'>
             <div className="input-group input-group-lg">
                 <input id={id}  {...parentProps} onKeyDown={onKeyDownHandler} onChange={onChangeHandler} className="form-control" /> 
                 <span className="input-group-append">
                     <Select 
                         className='w-100 h-100'
+                        value={options.filter(item => item.shortcode === base)} 
                         options={options}
                     />
-                    
                 </span>
             </div>
         </div>
@@ -111,7 +112,8 @@ const mapStateToProps = ({ rates, wallets }) => {
     console.log("Currently Rates ===: ", rates)
     return {
         rates: rates.rates,
-        pockets: wallets.pockets
+        pockets: wallets.pockets,
+        // base: wallets.base,
     }
 }
 

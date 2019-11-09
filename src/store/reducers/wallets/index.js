@@ -23,7 +23,8 @@ const initialState = {
             balance: '100.00',
             flag: 'UnitedKingdom'
         }
-    ]
+    ],
+    base: 'USD'
 };
 
 const wallets = function (state = initialState, action) {
@@ -32,13 +33,22 @@ const wallets = function (state = initialState, action) {
         case Actions.ADD:
         {
             return {
+                ...state,
                 balance: state.balance + action.payload
             };
         }
         case Actions.DEDUCT:
         {
             return {
+                ...state,
                 balance: state.balance - action.payload
+            };
+        }
+        case Actions.SET_BASE:
+        {
+            return {
+                ...state,
+                base: action.payload
             };
         }
         default:

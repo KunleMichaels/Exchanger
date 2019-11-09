@@ -6,19 +6,22 @@ import Slider from "react-slick";
 import Card from '../../components/Card';
 import { Icons } from '../../utils';
 import Exchange from '../../assets/images/exchange.svg';
+import { setBase} from '../../store/actions';
 import './styles.css';
 
-function Home({ pockets }){
+function Home({ pockets, setBase }){
+
     const settings = {
         className: "center",
         centerMode: true,
         infinite: true,
         // centerPadding: "60px",
-        slidesToShow: 2,
-        autoplay: true,
-        speed: 3000,
-        autoplaySpeed: 2000,
-        cssEase: "linear"
+        slidesToShow: 1,
+        // autoplay: true,
+        speed: 1000,
+        autoplaySpeed: 4000,
+        cssEase: "linear",
+        afterChange: current => setBase(current)
       };
 
     return (
@@ -58,5 +61,10 @@ const mapStateToProps = ({ wallets }) => {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setBase: (payload) => dispatch(setBase(payload))
+    }
+}
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
