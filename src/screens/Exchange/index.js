@@ -3,7 +3,7 @@ import AmountInput from '../../components/Input/AmountInput';
 import {connect} from "react-redux";
 import './styles.css';
 
-function Exchange({ baseCurrency }){
+function Exchange({ current, pockets }){
 
     const [base, setBase] = useState(0);
     const [convert, setConvert] = useState(0)
@@ -20,6 +20,7 @@ function Exchange({ baseCurrency }){
     }
 
 
+
     return (
         <div className='exchange__container'>
             <div className='jumbotron'>
@@ -33,7 +34,7 @@ function Exchange({ baseCurrency }){
                                 name='base'
                                 id="base-input"
                                 label='You Send'
-                                base={baseCurrency}
+                                base={pockets[current].shortcode}
                                 onChange={amount_on_change}
                                 placeholder="0"
                                 currentIndex={0}
@@ -43,6 +44,7 @@ function Exchange({ baseCurrency }){
                                 value={convert}
                                 name='convert'
                                 label='You Receive'
+                                base={current >= (pockets.length - 1) ? pockets[0].shortcode : pockets[current + 1].shortcode}
                                 id="convert-input"
                                 onChange={amount_on_change}
                                 placeholder="0"
@@ -58,7 +60,8 @@ function Exchange({ baseCurrency }){
 
 const mapStateToProps = ({ wallets }) => {
     return {
-        baseCurrency: wallets.base
+        current: wallets.base,
+        pockets: wallets.pockets
     }
 }
 

@@ -24,7 +24,7 @@ const initialState = {
             flag: 'UnitedKingdom'
         }
     ],
-    base: 'USD'
+    base: 0
 };
 
 const wallets = function (state = initialState, action) {

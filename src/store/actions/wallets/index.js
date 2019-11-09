@@ -13,7 +13,10 @@ export const deduct = (data) => ({
     payload: data
 });
 
-export const setBase = (data) => ({
-    type: SET_BASE,
-    payload: data
-});
+export const setBase = (data) => {
+    console.log("DATA", data)
+    return {
+        type: SET_BASE,
+        payload: data
+    }    
+};
