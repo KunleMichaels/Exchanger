@@ -2,41 +2,38 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import {connect} from "react-redux";
+import Slider from "react-slick";
 import Card from '../../components/Card';
 import { Icons } from '../../utils';
 import Exchange from '../../assets/images/exchange.svg';
 import './styles.css';
 
 function Home({ pockets }){
+    const settings = {
+        className: "center",
+        centerMode: true,
+        infinite: true,
+        // centerPadding: "60px",
+        slidesToShow: 2,
+        autoplay: true,
+        speed: 3000,
+        autoplaySpeed: 2000,
+        cssEase: "linear"
+      };
 
     return (
         <div className='home__container'>
             <div className='jumbotron'>
                 <h5 className='main__header'>Wallets</h5>
-                <div id="carouselExampleControls" className="carousel slide" data-ride="carousel" data-interval="false">
-                    <ol className="carousel-indicators">
-                        <li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                    </ol>
-                    <div className="carousel-inner">
-                        {
-                            pockets.map((pocket, index) => (
-                                <div key={pocket.currency} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                                    <Card currency={pocket.currency} flag={Icons[pocket.flag]} balance={pocket.balance} symbol={pocket.symbol}/>
-                                </div>
-                            ))
-                        }
-                    </div>
-                    <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="sr-only">Previous</span>
-                    </a>
-                    <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="sr-only">Next</span>
-                    </a>
-                </div>
+                <Slider {...settings}>
+                    {
+                        pockets.map((pocket, index) => (
+                             <div key={pocket.currency} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                                 <Card currency={pocket.currency} flag={Icons[pocket.flag]} balance={pocket.balance} symbol={pocket.symbol}/>
+                             </div>
+                         ))
+                    }
+                </Slider>
             </div>
             <section className='actions'>
                 <Link to='/exchange'>

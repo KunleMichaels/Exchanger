@@ -1,0 +1,112 @@
+.fx-calculator .form-group-lg .control-label {
+    position: absolute;
+    top: 12px;
+    left: 14px;
+    z-index: 1;
+    margin-bottom: 0;
+}
+
+
+.fx-calculator .input-group {
+    position: relative;
+    /* display: table; */
+    width: 100%;
+    border-collapse: separate;
+    flex-wrap: nowrap;
+}
+
+.fx-calculator .form-group-lg .input-lg, .form-group-lg .input-group {
+    margin-bottom: 0;
+}
+
+.fx-calculator .form-group-lg .input-lg, .form-group-lg .input-group-lg>.form-control, .form-group-lg .input-group-lg>.input-group-addon {
+    height: 72px;
+    padding: 28px 12px 4px;
+    font-size: 22px;
+    line-height: 32px;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.css-yk16xz-control {
+    height: 100%;
+}
+
+.css-1pahdxg-control {
+    height: 100%;
+}
+
+.currency-flag {
+    display: inline-block;
+    width: 24px;
+    height: 16px;
+}
+.input-group .input-group-addon, .input-group .form-control {
+    border-right-width: 0;
+    border-left-width: 0;
+    border-radius: 0;
+}
+
+.input-group-append, .input-group-prepend {
+    min-width: 30%;
+    display: flex;
+}
+
+.input-group-addon, .input-group-btn, .input-group .form-control {
+    display: table-cell;
+}
+
+.fx-calculator .input-group .form-control {
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+    border-color: #d3d5d8;
+}
+
+/* .fx-calculator .input-group .form-control:focus {
+    border-color: #00b9ff;
+} */
+
+.input-group .form-control:not(:last-child) {
+    border-right: 0;
+}
+
+.fx-calculator .input-group .input-group-btn:first-child, .input-group .input-group-addon:first-child, .input-group .form-control:first-child {
+    border-left-width: 1px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+.fx-calculator .input-group-addon, .input-group-btn {
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.fx-calculator .input-group-btn {
+    position: relative;
+    font-size: 0;
+    white-space: nowrap;
+}
+
+.fx-calculator .amount-currency-select-btn {
+    min-width: 105px;
+}
+
+@media (min-width: 576px){
+    .fx-calculator .amount-currency-select-btn {
+        min-width: 150px;
+    }
+}
+
+.fx-calculator .input-group .input-group-btn:last-child, .input-group .input-group-addon:last-child, .input-group .form-control:last-child {
+    border-right-width: 1px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.fx-calculator .custom-select {
+    height: 72px;
+}
+

@@ -21,6 +21,15 @@
   color: white;
 }
 
+label {
+  font-size: 14px;
+  color: #5d7079;
+  line-height: 20px;
+  -webkit-transition: color .15s ease-in-out;
+  -o-transition: color ease-in-out .15s;
+  transition: color .15s ease-in-out;
+}
+
 .App-link {
   color: #09d3ac;
 }

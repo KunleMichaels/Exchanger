@@ -2,9 +2,13 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from "react-redux";
+import Select from 'react-select';
+import { Icons } from '../../utils';
 import * as ratesActions from '../../store/actions/rates';
 
-function AmountInput({getRates, onChange, rates, pockets, currentIndex, ...parentProps}) {
+import './styles.css';
+
+function AmountInput({getRates, onChange, rates, pockets, id, label, currentIndex, ...parentProps}) {
 
     useEffect(() => {
         getRates();
@@ -72,19 +76,25 @@ function AmountInput({getRates, onChange, rates, pockets, currentIndex, ...paren
         } 
         onChange(e);
     }
- 
+    
+    const options = pockets.map(pocket => {
+        return {
+            label: <span><img src={Icons[pocket.flag] } className='currency-flag' alt={pocket.currency}/> {pocket.shortcode}</span>,
+            value: pocket.currency
+        }
+    })
 
     return (
-        <div className="input-group">
-            <input  {...parentProps} onKeyDown={onKeyDownHandler} onChange={onChangeHandler} className="form-control" /> 
-            <div className="input-group-append">
-                <select class="custom-select" id="currencies">
-                    {
-                        pockets.map((pocket, index) => {
-                            return <option value={pocket.currency} selected={index === currentIndex}>{pocket.currency}</option>
-                        })
-                    }
-                </select>
+        <div className='form-group form-group-lg mb-0'>
+            <div className="input-group input-group-lg">
+                <input id={id}  {...parentProps} onKeyDown={onKeyDownHandler} onChange={onChangeHandler} className="form-control" /> 
+                <span className="input-group-append">
+                    <Select 
+                        className='w-100 h-100'
+                        options={options}
+                    />
+                    
+                </span>
             </div>
         </div>
     )

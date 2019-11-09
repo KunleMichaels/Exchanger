@@ -5,18 +5,21 @@ const initialState = {
         {
             currency: 'dollars',
             symbol: '$',
+            shortcode: 'USD',
             balance: '100000000.00',
             flag: 'UnitedStates'
         },
         {
             currency: 'euros',
             symbol: '€',
+            shortcode: 'EUR',
             balance: '100.00',
             flag: 'Europe'
         },
         {
             currency: 'pounds',
             symbol: '£',
+            shortcode: 'GBP',
             balance: '100.00',
             flag: 'UnitedKingdom'
         }
