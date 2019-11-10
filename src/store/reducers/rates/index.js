@@ -1,7 +1,7 @@
 import * as Actions from '../../actions';
 
 const initialState = {
-    rates : null,
+    rates : [],
     requestId: 1,
     isFetching: false,
     error: null
@@ -14,12 +14,15 @@ const rates = function (state = initialState, action) {
         {
             return {
                 ...state,
+                isFetching: false,
                 rates: action.payload
             };
         }
         case Actions.GET_FX_RATES_ERROR:
         {
             return {
+                ...state,
+                isFetching: false,
                error: action.payload
             };
         }

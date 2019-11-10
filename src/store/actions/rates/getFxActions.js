@@ -9,6 +9,16 @@ export const getFxRates = (data) => ({
     payload: data
 });
 
+export const getFxRatesSuccess = (data) => ({
+    type: GET_FX_RATES_SUCCESS,
+    payload: data
+});
+
+export const getFxRatesError = (data) => ({
+    type: GET_FX_RATES_ERROR,
+    payload: data
+});
+
 export const poll = () => ({
     type: POLL
 })

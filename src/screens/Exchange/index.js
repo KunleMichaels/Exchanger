@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {connect} from "react-redux";
+import { Link } from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import * as ratesActions from '../../store/actions/rates';
 import * as walletsActions from '../../store/actions/wallets';
@@ -8,30 +9,74 @@ import {useRequest} from './useRequest';
 import { Icons } from '../../utils';
 import './styles.css';
 
-function Exchange({ getRates, poll, pockets, base, setBase, requestId, isFetching }){
-    
-    console.log("REQUESTID", requestId)
+function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertVal, setConvertVal, convert, setBase, setConvert, requestId, rates, isFetching }){
 
     useEffect(() => {
         getRates(base)
       }, 
       [base, requestId, getRates]);
     
+    //effect to handle changes to dropdown when base changes
+    useEffect(() => {
+        //convert using current rates and set value of end currency input when base select changes
+        if(rates && rates.rates ){
+        let newVal = convertVal / rates.rates[convert]
+            if(isNaN(newVal))
+                newVal = 0;
+            setConvertVal(newVal.toFixed(2))
+        }
+    }, [base])
 
+    //effect to handle changes to dropdown when convert changes
+    useEffect(() => {
+        //convert using current rates and set value of end currency input when end select changes
+        if(rates && rates.rates ){
+          let newVal = baseVal * rates.rates[convert]
+          if(isNaN(newVal))
+              newVal = 0;
+
+          setConvertVal(newVal.toFixed(2))
+        }
+    }, [convert])
+    
+    //custom hook to handle polling
     useRequest(base, 10000, poll, getRates, requestId, isFetching);
 
+    //generic onChange Handler
     const amount_on_change = (e) => {
-        let name = e.target.name;
 
+        //destructure properties from object
+        const {name, value } = e.target;
+
+        //handle base currency iput
         if(name === 'base'){
-            // setBase(e.target.value)
+
+            //set value of base currency input
+            setBaseVal(value)
+
+            //convert using current rates and set value of end currency input while typing
+            let newVal = value * rates.rates[convert]
+            if(isNaN(newVal))
+                newVal = 0;
+            setConvertVal(newVal.toFixed(2))
         }
-        else {
-            // setConvert(e.target.value)
+
+        //handle end currency iput
+        if(name === 'convert') {
+
+            //set value of end currency input
+            setConvertVal(value)
+
+            //convert using current rates and set value of base currency input while typing
+            let newVal = value / rates.rates[convert]
+            if(isNaN(newVal))
+                newVal = 0;
+            setBaseVal(newVal.toFixed(2))
         }
     }
 
-    const baseOptions = pockets.map(pocket => {
+    //convert pockets to select format
+    const options = pockets.map(pocket => {
         return {
             label: <span><img src={Icons[pocket.flag] } className='currency-flag' alt={pocket.currency}/> {pocket.shortcode}</span>,
             value: pocket.shortcode,
@@ -39,30 +84,31 @@ function Exchange({ getRates, poll, pockets, base, setBase, requestId, isFetchin
         }
     });
 
-    const otherOptions = baseOptions.filter(item => item.shortcode !== base);
-
-    const [end, setEnd] = useState(otherOptions[0])
-
-
+    //base currency input select handler
     const baseSelectChange = (item) => {
+
+        //set a new base currency
         setBase(item.shortcode)
+
     }
 
+    //end currency input select handler
     const endSelectChange = (item) => {
-        setEnd(item)
+
+        //set a new end currency
+        setConvert(item.shortcode)
     }
 
     return (
         <div className='exchange__container'>
             <div className='jumbotron'>
-                <h1 className='main__header'>Exchange</h1>
-                <div className='row'>
-                    <div className='col-sm-10 col-sm-push-1 col-lg-push-1 col-lg-5 m-t-2 m-b-0'></div>
-                    <div className='col-sm-10 col-sm-push-1 col-lg-push-1 col-lg-5 m-t-2 m-b-0'>
+                <Link to='/' className='main__header'>Exchange</Link>
+                <div className='row justify-content-center'>
+                    <div className='col-sm-10 col-sm-push-1 col-lg-offset-3 col-lg-6 mt-5 m-b-0'>
                         <div className='fx-calculator'>
                             <AmountInput
-                                value={baseOptions.filter(item => item.shortcode === base)}
-                                options={baseOptions}
+                                value={options.filter(item => item.shortcode === base)}
+                                options={options}
                                 name='base'
                                 id="base-input"
                                 label='You Send'
@@ -70,19 +116,19 @@ function Exchange({ getRates, poll, pockets, base, setBase, requestId, isFetchin
                                 selectChange={baseSelectChange}
                                 onChange={amount_on_change}
                                 placeholder="0"
-                                currentIndex={0}
+                                inputValue={baseVal}
                             />
                             <div className='current-rate'></div>
                             <AmountInput
-                                value={end}
-                                options={otherOptions}
+                                value={options.filter(item => item.shortcode === convert)}
+                                options={options}
                                 name='convert'
                                 label='You Receive'
                                 selectChange={endSelectChange}
                                 id="convert-input"
                                 onChange={amount_on_change}
                                 placeholder="0"
-                                currentIndex={2}
+                                inputValue={convertVal}
                             />
                         </div>
                     </div>
@@ -95,9 +141,13 @@ function Exchange({ getRates, poll, pockets, base, setBase, requestId, isFetchin
 const mapStateToProps = ({ wallets, rates }) => {
     return {
         base: wallets.base,
+        convert: wallets.convert,
+        baseVal: wallets.baseVal,
+        convertVal: wallets.convertVal,
         pockets: wallets.pockets,
         requestId: rates.requestId,
-        isFetching: rates.isFetching
+        isFetching: rates.isFetching,
+        rates: rates.rates
     }
 }
 
@@ -105,7 +155,10 @@ const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
         getRates: ratesActions.getFxRates,
         poll: ratesActions.poll,
-        setBase: walletsActions.setBase
+        setBase: walletsActions.setBase,
+        setConvert: walletsActions.setConvert,
+        setBaseVal: walletsActions.setBaseVal,
+        setConvertVal: walletsActions.setConvertVal
     }, dispatch);
 }
 

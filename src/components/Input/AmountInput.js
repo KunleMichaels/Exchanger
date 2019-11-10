@@ -7,7 +7,7 @@ import * as ratesActions from '../../store/actions/rates';
 
 import './styles.css';
 
-function AmountInput({getRates, onChange, options, value, id, label, base, selectChange, currentIndex, ...parentProps}) {
+function AmountInput({getRates, onChange, options, value, name, inputValue, id, label, base, selectChange, ...parentProps}) {
 
 
     useEffect(() => {
@@ -58,6 +58,7 @@ function AmountInput({getRates, onChange, options, value, id, label, base, selec
         let charArray = newValue.split('');
 
         let periodCount = 0;
+
         // eslint-disable-next-line
         charArray.map(char => {
             if(char === '.') {
@@ -80,7 +81,7 @@ function AmountInput({getRates, onChange, options, value, id, label, base, selec
      return (
         <div className='form-group form-group-lg mb-0'>
             <div className="input-group input-group-lg">
-                <input id={id}  {...parentProps} onKeyDown={onKeyDownHandler} onChange={onChangeHandler} className="form-control" /> 
+                <input id={id}  {...parentProps} name={name} value={inputValue} onKeyDown={onKeyDownHandler} onChange={onChangeHandler} className="form-control" /> 
                 <span className="input-group-append">
                     <Select 
                         className='w-100 h-100'
@@ -103,7 +104,6 @@ AmountInput.propTypes = {
 const mapStateToProps = ({ wallets }) => {
     return {
         pockets: wallets.pockets,
-        // base: wallets.base,
     }
 }
 

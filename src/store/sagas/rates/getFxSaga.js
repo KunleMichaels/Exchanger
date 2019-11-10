@@ -4,19 +4,7 @@ import {
     GET_FX_RATES,
     GET_FX_RATES_ERROR,
     GET_FX_RATES_SUCCESS
-}
-    from "../../actions/rates/getFxActions";
-import {
-    SET_BASE
-}
-    from "../../actions/wallets";
-
-// function delay(duration) {
-//     const promise = new Promise(resolve => {
-//         setTimeout(() => resolve(true), duration)
-//     })
-//     return promise
-//       }
+} from "../../actions/rates/getFxActions";
 
 function* getFxRatesSaga(action) {
         try {
@@ -25,6 +13,10 @@ function* getFxRatesSaga(action) {
                 type: GET_FX_RATES_SUCCESS,
                 payload: data
             });
+            // yield put({
+            //     type: UPDATE_CONVERT_VAL,
+            //     payload: data.rates
+            // });
 
         } catch (error) {
             yield put({
@@ -36,5 +28,5 @@ function* getFxRatesSaga(action) {
 
 
 export function* getFxRatesSagaWatcher() {
-    yield takeEvery([SET_BASE, GET_FX_RATES], getFxRatesSaga);
+    yield takeEvery([GET_FX_RATES], getFxRatesSaga);
 }

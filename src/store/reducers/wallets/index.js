@@ -24,7 +24,10 @@ const initialState = {
             flag: 'UnitedKingdom'
         }
     ],
-    base: 'USD'
+    base: 'USD',
+    convert: 'EUR',
+    baseVal: 0,
+    convertVal: 0
 };
 
 const wallets = function (state = initialState, action) {
@@ -49,6 +52,41 @@ const wallets = function (state = initialState, action) {
             return {
                 ...state,
                 base: action.payload
+            };
+        }
+        case Actions.SET_CONVERT:
+        {
+            return {
+                ...state,
+                convert: action.payload
+            };
+        }
+        case Actions.SET_BASE_VAL:
+        {
+            return {
+                ...state,
+                baseVal: action.payload
+            };
+        }
+        case Actions.UPDATE_BASE_VAL:
+        {
+            return {
+                ...state,
+                baseVal: state.convertVal / action.payload
+            };
+        }
+        case Actions.SET_CONVERT_VAL:
+        {
+            return {
+                ...state,
+                convertVal: action.payload
+            };
+        }
+        case Actions.UPDATE_CONVERT_VAL:
+        {
+            return {
+                ...state,
+                convertVal: state.baseVal * action.payload[state.convert]
             };
         }
         default:
