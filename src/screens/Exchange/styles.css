@@ -23,4 +23,9 @@
 
 .current-rate {
     margin: 100px 0;
+    text-align: center;
+}
+
+.current-rate h3 {
+    color: #ffffff;
 }

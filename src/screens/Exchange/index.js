@@ -6,7 +6,7 @@ import * as ratesActions from '../../store/actions/rates';
 import * as walletsActions from '../../store/actions/wallets';
 import AmountInput from '../../components/Input/AmountInput';
 import {useRequest} from './useRequest';
-import { Icons } from '../../utils';
+import { Icons, sign } from '../../utils';
 import './styles.css';
 
 function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertVal, setConvertVal, convert, setBase, setConvert, requestId, rates, isFetching }){
@@ -118,7 +118,7 @@ function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertV
                                 placeholder="0"
                                 inputValue={baseVal}
                             />
-                            <div className='current-rate'></div>
+                            <div className='current-rate'> <h3>{sign[base]}1 = { rates && rates.rates && `${sign[convert]} ${rates.rates[convert]}`}</h3> </div>
                             <AmountInput
                                 value={options.filter(item => item.shortcode === convert)}
                                 options={options}

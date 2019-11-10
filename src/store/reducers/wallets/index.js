@@ -25,7 +25,7 @@ const initialState = {
         }
     ],
     base: 'USD',
-    convert: 'EUR',
+    convert: 'USD',
     baseVal: 0,
     convertVal: 0
 };

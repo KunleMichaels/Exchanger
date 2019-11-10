@@ -9,6 +9,8 @@ import {
 function* getFxRatesSaga(action) {
         try {
             const data = yield call(fxService.getAllRates, action.payload);
+            if(data.base === 'EUR')
+                data.rates = {...data.rates, "EUR": 1.0}
             yield put({
                 type: GET_FX_RATES_SUCCESS,
                 payload: data

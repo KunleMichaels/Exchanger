@@ -50,6 +50,12 @@ export const regexBase = {
     wholeValueRegex:  /^[0-9]+$/,
 }
 
+export const sign = {
+  EUR: '€',
+  GBP: '£',
+  USD: '$'
+}
+
 export const Icons = {
   'UnitedStates': UnitedStates,
   'UnitedKingdom': UnitedKingdom,
