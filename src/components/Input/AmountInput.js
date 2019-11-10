@@ -11,8 +11,8 @@ import './styles.css';
 function AmountInput({getRates, onChange, rates, pockets, id, label, base, currentIndex, ...parentProps}) {
 
     useEffect(() => {
-        getRates();
-    }, [getRates])
+        getRates(base);
+    }, [getRates, base])
 
     const onKeyDownHandler = (e) => {
 
@@ -76,6 +76,10 @@ function AmountInput({getRates, onChange, rates, pockets, id, label, base, curre
         } 
         onChange(e);
     }
+
+    const handleChange = (e) => {
+        console.log("EEEEEEEEEEEEEE", this)
+    }
     
     const options = pockets.map(pocket => {
         return {
@@ -93,6 +97,7 @@ function AmountInput({getRates, onChange, rates, pockets, id, label, base, curre
                     <Select 
                         className='w-100 h-100'
                         value={options.filter(item => item.shortcode === base)} 
+                        onChange={handleChange}
                         options={options}
                     />
                 </span>

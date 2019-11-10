@@ -4,7 +4,7 @@ import systemConfig from '../config/system';
 class productsService {
 
 
-    getAllRates = (base="USD") => {
+    getAllRates = (base) => {
         return new Promise((resolve, reject) => {
             axios.get(systemConfig.serverBaseUrl + '/latest', {
                 params: {
