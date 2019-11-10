@@ -9,7 +9,7 @@ class productsService {
             axios.get(systemConfig.serverBaseUrl + '/latest', {
                 params: {
                   base,
-                  symbols: 'USD,GBP,EUR'  
+                //   symbols: 'USD,GBP,EUR'  
                 }
             }).then(response => {
                 resolve(response.data)

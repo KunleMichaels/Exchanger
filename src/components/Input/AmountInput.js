@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from "react-redux";
 import Select from 'react-select';
-import { Icons } from '../../utils';
 import * as ratesActions from '../../store/actions/rates';
 
 import './styles.css';
 
-function AmountInput({getRates, onChange, rates, pockets, id, label, base, currentIndex, ...parentProps}) {
+function AmountInput({getRates, onChange, options, value, id, label, base, selectChange, currentIndex, ...parentProps}) {
+
 
     useEffect(() => {
         getRates(base);
@@ -77,18 +77,6 @@ function AmountInput({getRates, onChange, rates, pockets, id, label, base, curre
         onChange(e);
     }
 
-    const handleChange = (e) => {
-        console.log("EEEEEEEEEEEEEE", this)
-    }
-    
-    const options = pockets.map(pocket => {
-        return {
-            label: <span><img src={Icons[pocket.flag] } className='currency-flag' alt={pocket.currency}/> {pocket.shortcode}</span>,
-            value: pocket.currency,
-            shortcode: pocket.shortcode
-        }
-    })
-
      return (
         <div className='form-group form-group-lg mb-0'>
             <div className="input-group input-group-lg">
@@ -96,8 +84,8 @@ function AmountInput({getRates, onChange, rates, pockets, id, label, base, curre
                 <span className="input-group-append">
                     <Select 
                         className='w-100 h-100'
-                        value={options.filter(item => item.shortcode === base)} 
-                        onChange={handleChange}
+                        value={value} 
+                        onChange={selectChange}
                         options={options}
                     />
                 </span>
@@ -109,14 +97,11 @@ function AmountInput({getRates, onChange, rates, pockets, id, label, base, curre
 }
 
 AmountInput.propTypes = {
-    rates: PropTypes.object.isRequired,
     getRates: PropTypes.func.isRequired
 }
 
-const mapStateToProps = ({ rates, wallets }) => {
-    console.log("Currently Rates ===: ", rates)
+const mapStateToProps = ({ wallets }) => {
     return {
-        rates: rates.rates,
         pockets: wallets.pockets,
         // base: wallets.base,
     }

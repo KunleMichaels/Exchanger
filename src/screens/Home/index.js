@@ -21,7 +21,7 @@ function Home({ pockets, setBase }){
         speed: 1000,
         autoplaySpeed: 4000,
         cssEase: "linear",
-        afterChange: current => setBase(current)
+        afterChange: current => setBase(pockets[current].shortcode)
       };
 
     return (

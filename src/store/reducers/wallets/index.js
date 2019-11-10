@@ -6,25 +6,25 @@ const initialState = {
             currency: 'dollars',
             symbol: '$',
             shortcode: 'USD',
-            balance: '100000000.00',
+            balance: '10000.00',
             flag: 'UnitedStates'
         },
         {
             currency: 'euros',
             symbol: '€',
             shortcode: 'EUR',
-            balance: '100.00',
+            balance: '1000.00',
             flag: 'Europe'
         },
         {
             currency: 'pounds',
             symbol: '£',
             shortcode: 'GBP',
-            balance: '100.00',
+            balance: '1000.00',
             flag: 'UnitedKingdom'
         }
     ],
-    base: 0
+    base: 'USD'
 };
 
 const wallets = function (state = initialState, action) {
