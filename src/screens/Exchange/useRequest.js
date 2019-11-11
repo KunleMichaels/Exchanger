@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const useRequest = (base, pollInterval, poll, getRates, requestId, isFetching) => {
-
+  
    React.useEffect(() => {
     getRates(base)
    }, [base, requestId, getRates]);

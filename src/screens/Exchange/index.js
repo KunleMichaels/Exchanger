@@ -11,21 +11,19 @@ import './styles.css';
 
 function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertVal, setConvertVal, convert, setBase, setConvert, requestId, rates, isFetching }){
 
-    useEffect(() => {
-        getRates(base)
-      }, 
-      [base, requestId, getRates]);
-    
+    //custom hook to handle polling
+    useRequest(base, 10000, poll, getRates, requestId, isFetching);
+
     //effect to handle changes to dropdown when base changes
     useEffect(() => {
         //convert using current rates and set value of end currency input when base select changes
         if(rates && rates.rates ){
-        let newVal = convertVal / rates.rates[convert]
+        let newVal = baseVal / rates.rates[convert]
             if(isNaN(newVal))
                 newVal = 0;
             setConvertVal(newVal.toFixed(2))
         }
-    }, [base])
+    }, [base, rates])
 
     //effect to handle changes to dropdown when convert changes
     useEffect(() => {
@@ -39,8 +37,6 @@ function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertV
         }
     }, [convert])
     
-    //custom hook to handle polling
-    useRequest(base, 10000, poll, getRates, requestId, isFetching);
 
     //generic onChange Handler
     const amount_on_change = (e) => {
@@ -86,7 +82,6 @@ function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertV
 
     //base currency input select handler
     const baseSelectChange = (item) => {
-
         //set a new base currency
         setBase(item.shortcode)
 

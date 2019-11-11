@@ -15,11 +15,6 @@ function* getFxRatesSaga(action) {
                 type: GET_FX_RATES_SUCCESS,
                 payload: data
             });
-            // yield put({
-            //     type: UPDATE_CONVERT_VAL,
-            //     payload: data.rates
-            // });
-
         } catch (error) {
             yield put({
                 type: GET_FX_RATES_ERROR, 
