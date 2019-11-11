@@ -6,7 +6,7 @@ import Slider from "react-slick";
 import Card from '../../components/Card';
 import { Icons } from '../../utils';
 import Exchange from '../../assets/images/exchange.svg';
-import { setBase} from '../../store/actions';
+import { setBase, setConvert } from '../../store/actions';
 import './styles.css';
 
 function Home({ pockets, setBase }){
@@ -15,13 +15,17 @@ function Home({ pockets, setBase }){
         className: "center",
         centerMode: true,
         infinite: true,
-        // centerPadding: "60px",
         slidesToShow: 1,
-        // autoplay: true,
         speed: 1000,
         autoplaySpeed: 4000,
         cssEase: "linear",
-        afterChange: current => setBase(pockets[current].shortcode)
+        afterChange: current => {
+            setBase(pockets[current].shortcode)
+            if(current >= pockets.length - 1)
+                setConvert(pockets[0].shortcode)
+            else
+                setConvert(pockets[current + 1].shortcode)
+        }
       };
 
     return (

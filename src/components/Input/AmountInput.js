@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from "react-redux";
 import Select from 'react-select';
+// import { formatMoney } from '../../utils';
 import * as ratesActions from '../../store/actions/rates';
 
 import './styles.css';
@@ -93,7 +94,7 @@ function AmountInput({getRates, onChange, options, value, name, inputValue, id, 
             </div>
             {
                 invalid && 
-                <small className="form-text text-muted">
+                <small className="form-text text-red">
                    {invalidText}
                 </small>
             }

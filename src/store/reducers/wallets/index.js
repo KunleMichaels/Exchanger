@@ -6,21 +6,21 @@ const initialState = {
             currency: 'dollars',
             symbol: '$',
             shortcode: 'USD',
-            balance: '10000.00',
+            balance: 10000.00,
             flag: 'UnitedStates'
         },
         {
             currency: 'euros',
             symbol: '€',
             shortcode: 'EUR',
-            balance: '1000.00',
+            balance: 1000.00,
             flag: 'Europe'
         },
         {
             currency: 'pounds',
             symbol: '£',
             shortcode: 'GBP',
-            balance: '1000.00',
+            balance: 1000.00,
             flag: 'UnitedKingdom'
         }
     ],
@@ -35,16 +35,32 @@ const wallets = function (state = initialState, action) {
     {
         case Actions.ADD:
         {
+            // let foundIndex = state.pockets.findIndex(x => x.code === action.payload.code);
+
             return {
                 ...state,
-                balance: state.balance + action.payload
+                pockets: state.pockets.map(pocket => {
+                    if(pocket.shortcode === action.payload.code){
+                        let balance = parseFloat(pocket.balance) + parseFloat(action.payload.amount)
+                        pocket.balance = balance.toFixed(2)
+                    }
+                    return pocket
+                })
             };
         }
         case Actions.DEDUCT:
         {
+            // let foundIndex = state.pockets.findIndex(x => x.code === action.payload.code);
+
             return {
                 ...state,
-                balance: state.balance - action.payload
+                pockets: state.pockets.map(pocket => {
+                    if(pocket.shortcode === action.payload.code){
+                        let balance = parseFloat(pocket.balance) - parseFloat(action.payload.amount)
+                        pocket.balance = balance.toFixed(2)
+                    }
+                    return pocket
+                })
             };
         }
         case Actions.SET_BASE:

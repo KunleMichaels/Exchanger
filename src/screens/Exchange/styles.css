@@ -21,6 +21,22 @@
     position: relative;
 }
 
+.exchange__container h1 {
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+.fx-calculator .balance p{
+    color: #ffffff;
+    line-height: 1.3em;
+}
+
+.fx-calculator .balance p span{
+    color: #ffffff;
+    font-weight: 600;
+    font-style: italic;
+}
+
 .current-rate {
     margin: 50px 0;
     text-align: center;

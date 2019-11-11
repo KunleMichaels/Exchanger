@@ -8,14 +8,20 @@ export const SET_CONVERT_VAL = 'SET_CONVERT_VAL';
 export const UPDATE_CONVERT_VAL = 'UPDATE_CONVERT_VAL';
 
 
-export const add = (data) => ({
+export const add = (code, amount) => ({
     type: ADD,
-    payload: data
+    payload: {
+        code,
+        amount
+    }
 });
 
-export const deduct = (data) => ({
+export const deduct = (code, amount) => ({
     type: DEDUCT,
-    payload: data
+    payload: {
+        code,
+        amount
+    }
 });
 
 export const setBase = (data) => {

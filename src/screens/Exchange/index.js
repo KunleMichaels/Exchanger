@@ -9,7 +9,7 @@ import {useRequest} from './useRequest';
 import { Icons, sign } from '../../utils';
 import './styles.css';
 
-function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertVal, setConvertVal, convert, setBase, setConvert, requestId, rates, isFetching }){
+function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertVal, setConvertVal, convert, setBase, setConvert, requestId, rates, isFetching, deduct, add }){
 
     const [baseInvalid, setBaseInvalid] = useState(false);
     const [invalidText, setInvalidText] = useState(false)
@@ -17,29 +17,17 @@ function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertV
     //custom hook to handle polling
     useRequest(base, 10000, poll, getRates, requestId, isFetching);
 
-    //effect to handle changes to dropdown when base changes
+    //effect to handle changes to dropdown when dropdown changes changes
     useEffect(() => {
         //convert using current rates and set value of end currency input when base select changes
         if(rates && rates.rates ){
-        let newVal = baseVal / rates.rates[convert]
+        let newVal = baseVal * rates.rates[convert]
             if(isNaN(newVal))
                 newVal = 0;
             setConvertVal(newVal.toFixed(2))
         }
-    }, [base, rates])
+    }, [base, rates, convert, baseVal, setConvertVal])
 
-    //effect to handle changes to dropdown when convert changes
-    useEffect(() => {
-        //convert using current rates and set value of end currency input when end select changes
-        if(rates && rates.rates ){
-          let newVal = baseVal * rates.rates[convert]
-          if(isNaN(newVal))
-              newVal = 0;
-
-          setConvertVal(newVal.toFixed(2))
-        }
-    }, [convert])
-    
 
     //generic onChange Handler
     const amount_on_change = (e) => {
@@ -48,27 +36,27 @@ function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertV
         const {name, value } = e.target;
 
         const basePocket = pockets.filter(pocket => pocket.shortcode === base)
-        console.log("BASE", basePocket)
+
         const pocket = basePocket[0];
 
         //handle base currency iput
         if(name === 'base'){
 
-            if(value <= parseFloat(pocket.balance)){
-                setBaseInvalid(false)
-                //set value of base currency input
-                setBaseVal(value)
-
-                //convert using current rates and set value of end currency input while typing
-                let newVal = value * rates.rates[convert]
-                if(isNaN(newVal))
-                    newVal = 0;
-                setConvertVal(newVal.toFixed(2))
-            }
-            else {
+            if(value > parseFloat(pocket.balance)){
                 setInvalidText("You can't exceed your balance")
                 setBaseInvalid(true)
             }
+            if(value <= parseFloat(pocket.balance)){
+                setBaseInvalid(false)
+            }
+            //set value of base currency input
+            setBaseVal(value)
+
+            //convert using current rates and set value of end currency input while typing
+            let newVal = value * rates.rates[convert]
+            if(isNaN(newVal))
+                newVal = 0;
+            setConvertVal(newVal.toFixed(2))
             
         }
 
@@ -80,16 +68,15 @@ function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertV
             //set value of end currency input
             if(isNaN(newVal))
                 newVal = 0;
-
-            if(newVal <= parseFloat(pocket.balance)){
-                setBaseInvalid(false)
-                setConvertVal(value)
-                setBaseVal(newVal.toFixed(2))
-            }
             if(newVal >= parseFloat(pocket.balance)){
                 setInvalidText("You can't exceed your balance")
                 setBaseInvalid(true)
             }
+            if(newVal >= parseFloat(pocket.balance)){
+                setBaseInvalid(false)
+            }
+            setConvertVal(value)
+            setBaseVal(newVal.toFixed(2))
 
         }
     }
@@ -99,7 +86,8 @@ function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertV
         return {
             label: <span><img src={Icons[pocket.flag] } className='currency-flag' alt={pocket.currency}/> {pocket.shortcode}</span>,
             value: pocket.shortcode,
-            shortcode: pocket.shortcode
+            shortcode: pocket.shortcode,
+            balance: pocket.balance
         }
     });
 
@@ -117,15 +105,24 @@ function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertV
         setConvert(item.shortcode)
     }
 
+    const handleExchange = () => {
+        deduct(base, baseVal);
+        add(convert, convertVal)
+    }
+
+    const current_base = options.filter(item => item.shortcode === base)[0]
+    const current_convert = options.filter(item => item.shortcode === convert)[0]
+
     return (
         <div className='exchange__container'>
             <div className='jumbotron'>
-                <Link to='/' className='main__header'>Exchange</Link>
+                <Link to='/' className='main__header'>Back</Link>
                 <div className='row justify-content-center'>
                     <div className='col-sm-10 col-sm-push-1 col-lg-offset-3 col-lg-6 mt-5 m-b-0'>
                         <div className='fx-calculator'>
+                            <div className='balance'><p><span>{current_base.shortcode}</span> Balance: <span>{current_base.balance}</span></p></div>
                             <AmountInput
-                                value={options.filter(item => item.shortcode === base)}
+                                value={current_base}
                                 options={options}
                                 name='base'
                                 id="base-input"
@@ -133,26 +130,26 @@ function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertV
                                 base={base}
                                 selectChange={baseSelectChange}
                                 onChange={amount_on_change}
-                                placeholder="0"
                                 invalidText={invalidText}
                                 invalid={baseInvalid}
                                 inputValue={baseVal}
                             />
                             <div className='current-rate'> <h3>{sign[base]}1 = { rates && rates.rates && `${sign[convert]} ${rates.rates[convert]}`}</h3> </div>
+
+                            <div className='balance'><p><span>{current_convert.shortcode}</span> Balance: <span>{current_convert.balance}</span></p></div>
                             <AmountInput
-                                value={options.filter(item => item.shortcode === convert)}
+                                value={current_convert}
                                 options={options}
                                 name='convert'
                                 label='You Receive'
                                 selectChange={endSelectChange}
                                 id="convert-input"
                                 onChange={amount_on_change}
-                                placeholder="0"
                                 inputValue={convertVal}
                             />
                         </div>
                         <div className='exchange-actions'>
-                            <button className='exchange-btn form-control btn-lg' disabled={baseInvalid}>Exchange</button>
+                            <button onClick={handleExchange} className='exchange-btn form-control btn-lg' disabled={parseFloat(current_base.balance) < parseFloat(baseVal)}>Exchange</button>
                         </div>
                     </div>
                 </div>
@@ -181,7 +178,9 @@ const mapDispatchToProps = (dispatch) => {
         setBase: walletsActions.setBase,
         setConvert: walletsActions.setConvert,
         setBaseVal: walletsActions.setBaseVal,
-        setConvertVal: walletsActions.setConvertVal
+        setConvertVal: walletsActions.setConvertVal,
+        deduct: walletsActions.deduct,
+        add: walletsActions.add
     }, dispatch);
 }
 

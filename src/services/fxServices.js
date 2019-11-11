@@ -9,6 +9,7 @@ class productsService {
             axios.get(systemConfig.serverBaseUrl + '/latest', {
                 params: {
                   base,
+                  timestamp: new Date().getTime()
                 //   symbols: 'USD,GBP,EUR'  
                 }
             }).then(response => {
