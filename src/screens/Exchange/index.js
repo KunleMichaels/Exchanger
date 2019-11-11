@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {connect} from "react-redux";
 import { Link } from 'react-router-dom';
 import {bindActionCreators} from 'redux';
@@ -10,6 +10,9 @@ import { Icons, sign } from '../../utils';
 import './styles.css';
 
 function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertVal, setConvertVal, convert, setBase, setConvert, requestId, rates, isFetching }){
+
+    const [baseInvalid, setBaseInvalid] = useState(false);
+    const [invalidText, setInvalidText] = useState(false)
 
     //custom hook to handle polling
     useRequest(base, 10000, poll, getRates, requestId, isFetching);
@@ -44,30 +47,50 @@ function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertV
         //destructure properties from object
         const {name, value } = e.target;
 
+        const basePocket = pockets.filter(pocket => pocket.shortcode === base)
+        console.log("BASE", basePocket)
+        const pocket = basePocket[0];
+
         //handle base currency iput
         if(name === 'base'){
 
-            //set value of base currency input
-            setBaseVal(value)
+            if(value <= parseFloat(pocket.balance)){
+                setBaseInvalid(false)
+                //set value of base currency input
+                setBaseVal(value)
 
-            //convert using current rates and set value of end currency input while typing
-            let newVal = value * rates.rates[convert]
-            if(isNaN(newVal))
-                newVal = 0;
-            setConvertVal(newVal.toFixed(2))
+                //convert using current rates and set value of end currency input while typing
+                let newVal = value * rates.rates[convert]
+                if(isNaN(newVal))
+                    newVal = 0;
+                setConvertVal(newVal.toFixed(2))
+            }
+            else {
+                setInvalidText("You can't exceed your balance")
+                setBaseInvalid(true)
+            }
+            
         }
 
         //handle end currency iput
         if(name === 'convert') {
 
-            //set value of end currency input
-            setConvertVal(value)
-
             //convert using current rates and set value of base currency input while typing
             let newVal = value / rates.rates[convert]
+            //set value of end currency input
             if(isNaN(newVal))
                 newVal = 0;
-            setBaseVal(newVal.toFixed(2))
+
+            if(newVal <= parseFloat(pocket.balance)){
+                setBaseInvalid(false)
+                setConvertVal(value)
+                setBaseVal(newVal.toFixed(2))
+            }
+            if(newVal >= parseFloat(pocket.balance)){
+                setInvalidText("You can't exceed your balance")
+                setBaseInvalid(true)
+            }
+
         }
     }
 
@@ -84,7 +107,7 @@ function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertV
     const baseSelectChange = (item) => {
         //set a new base currency
         setBase(item.shortcode)
-
+        setBaseInvalid(false)
     }
 
     //end currency input select handler
@@ -111,6 +134,8 @@ function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertV
                                 selectChange={baseSelectChange}
                                 onChange={amount_on_change}
                                 placeholder="0"
+                                invalidText={invalidText}
+                                invalid={baseInvalid}
                                 inputValue={baseVal}
                             />
                             <div className='current-rate'> <h3>{sign[base]}1 = { rates && rates.rates && `${sign[convert]} ${rates.rates[convert]}`}</h3> </div>
@@ -125,6 +150,9 @@ function Exchange({ getRates, poll, pockets, base, baseVal, setBaseVal, convertV
                                 placeholder="0"
                                 inputValue={convertVal}
                             />
+                        </div>
+                        <div className='exchange-actions'>
+                            <button className='exchange-btn form-control btn-lg' disabled={baseInvalid}>Exchange</button>
                         </div>
                     </div>
                 </div>

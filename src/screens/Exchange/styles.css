@@ -22,10 +22,26 @@
 }
 
 .current-rate {
-    margin: 100px 0;
+    margin: 50px 0;
     text-align: center;
 }
 
 .current-rate h3 {
     color: #ffffff;
+}
+
+.exchange-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+.exchange-btn {
+    height: 75px;
+    width: 300px;
+    text-align: center;
+    background-color: palevioletred;
+    color: #ffffff;
+    border: none;
+    border-radius: 40px;
 }

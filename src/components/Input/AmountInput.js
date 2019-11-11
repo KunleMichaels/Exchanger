@@ -7,7 +7,7 @@ import * as ratesActions from '../../store/actions/rates';
 
 import './styles.css';
 
-function AmountInput({getRates, onChange, options, value, name, inputValue, id, label, base, selectChange, ...parentProps}) {
+function AmountInput({getRates, onChange, options, value, name, inputValue, id, label, base, selectChange, invalid, invalidText, ...parentProps}) {
 
 
     useEffect(() => {
@@ -91,6 +91,13 @@ function AmountInput({getRates, onChange, options, value, name, inputValue, id, 
                     />
                 </span>
             </div>
+            {
+                invalid && 
+                <small className="form-text text-muted">
+                   {invalidText}
+                </small>
+            }
+            
         </div>
     )
 
